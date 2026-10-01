@@ -45,6 +45,6 @@ describe('Testes de Transferência com login autorizado', () => {
             .set('Authorization', `Bearer ${token}`);
 
         expect(response.status).to.equal(200);
-        //console.log('Transferências:', response.body);
+        console.log('Transferências:', response.body);
     });
 });
