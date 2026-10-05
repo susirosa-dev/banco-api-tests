@@ -1,32 +1,18 @@
 const request = require('supertest');
 const { expect } = require('chai');
+const { obterToken } = require('../helpers/autenticacao'); // Importar a função de autenticação
 require('dotenv').config();
-
 
 // Trocar essa linha no package.json: "test": "mocha ./test/**/transferencias.test.js --timeout 200000 --reporter mochawesome"
 // para: "test": "mocha ./test/**/*.test.js --timeout 200000 --reporter mochawesome"
 
 describe('Testes de Transferência com login autorizado', () => {
-
-    let token;
-
+    
+    let token;    
     before(async () => {
-
-        const response = await request(process.env.BASE_URL)
-            .post('/login')
-            .set('Content-Type', 'application/json')
-            .send({
-                username: 'julio.lima',
-                senha: '123456'
-            });
-
-        expect(response.status).to.equal(200);
-        expect(response.body.token).to.be.a('string').and.not.be.empty;
-
-        token = response.body.token;
+        token = await obterToken(process.env.BANCO_USUARIO, process.env.BANCO_SENHA); // Obter o token usando a função de autenticação
     });
-
-
+        
     it('Deve criar uma transferência', async () => {
 
         const response = await request(process.env.BASE_URL)
