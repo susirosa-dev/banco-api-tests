@@ -1,6 +1,10 @@
 const request = require('supertest');
 const { expect } = require('chai');
 
+
+// Trocar essa linha no package.json: "test": "mocha ./test/**/transferencias.test.js --timeout 200000 --reporter mochawesome"
+// para: "test": "mocha ./test/**/*.test.js --timeout 200000 --reporter mochawesome"
+
 describe('Login Tests', () => {
     describe('POST /login', () => {
         it('Deve retornar 200 com um token em string, com credenciais validas', async () => {

@@ -1,6 +1,10 @@
 const request = require('supertest');
 const { expect } = require('chai');
 
+
+// Trocar essa linha no package.json: "test": "mocha ./test/**/transferencias.test.js --timeout 200000 --reporter mochawesome"
+// para: "test": "mocha ./test/**/*.test.js --timeout 200000 --reporter mochawesome"
+
 describe('Testes de Transferência com login autorizado', () => {
 
     let token;
@@ -26,7 +30,8 @@ describe('Testes de Transferência com login autorizado', () => {
 
         const response = await request('http://localhost:3000')
             .post('/transferencias')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', `Bearer ${token}`)  // Set é para Headers
             .send({
                 contaOrigem: 1,
                 contaDestino: 2,
