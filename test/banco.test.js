@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { expect } = require('chai');
+require('dotenv').config();
 
 
 // Trocar essa linha no package.json: "test": "mocha ./test/**/transferencias.test.js --timeout 200000 --reporter mochawesome"
@@ -11,7 +12,7 @@ describe('Testes de Transferência com login autorizado', () => {
 
     before(async () => {
 
-        const response = await request('http://localhost:3000')
+        const response = await request(process.env.BASE_URL)
             .post('/login')
             .set('Content-Type', 'application/json')
             .send({
@@ -28,7 +29,7 @@ describe('Testes de Transferência com login autorizado', () => {
 
     it('Deve criar uma transferência', async () => {
 
-        const response = await request('http://localhost:3000')
+        const response = await request(process.env.BASE_URL)
             .post('/transferencias')
             .set('Content-Type', 'application/json')
             .set('Authorization', `Bearer ${token}`)  // Set é para Headers
@@ -45,7 +46,7 @@ describe('Testes de Transferência com login autorizado', () => {
 
     it('Deve listar as transferências', async () => {
 
-        const response = await request('http://localhost:3000')
+        const response = await request(process.env.BASE_URL)
             .get('/transferencias')
             .set('Authorization', `Bearer ${token}`);
 

@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { expect } = require('chai');
+require('dotenv').config();
 
 
 // Trocar essa linha no package.json: "test": "mocha ./test/**/transferencias.test.js --timeout 200000 --reporter mochawesome"
@@ -8,7 +9,7 @@ const { expect } = require('chai');
 describe('Login Tests', () => {
     describe('POST /login', () => {
         it('Deve retornar 200 com um token em string, com credenciais validas', async () => {
-            const response = await request('http://localhost:3000')
+            const response = await request(process.env.BASE_URL)
                 .post('/login')
                 .set('Content-Type', 'application/json')
                 .send({
