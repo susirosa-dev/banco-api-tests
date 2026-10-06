@@ -74,24 +74,44 @@ describe('Transferências', () => {
     });
     
     describe('GET /transferências', () => {
+
         it('Lista as transferências realizadas', async () => {
 
             const response = await request(process.env.BASE_URL)
-                .get('/transferencias')
+                .get('/transferencias?page=1&limit=10')  // Exemplo de paginação
                 .set('Authorization', `Bearer ${token}`);
 
-            expect(response.status).to.equal(200);
-            //console.log('Transferências:', response.body);
-        });
+            expect(response.status).to.equal(200);           
+            expect(response.body.limit).to.equal(10);
+            expect(response.body.transferencias).to.have.lengthOf(10);
 
-        it('Consulta uma transferência específica', async () => {
+            console.log('Transferências:', response.body);           
+          
+        });
+    });
+
+    describe('GET /transferências/id', () => {
+
+        it('Consulta uma transferência específica - deve retornar 200.', async () => {
 
             const response = await request(process.env.BASE_URL)
-                .get('/transferencias/1')  // Exemplo de ID de transferência
+                .get('/transferencias/7')  // Exemplo de ID de transferência
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).to.equal(200);
-            //console.log('Transferências:', response.body);
+
+            // Verificações adicionais para garantir que os dados retornados correspondam ao esperado
+            expect(response.body.id).to.equal(7); // Verifica se o ID da transferência retornada é igual ao ID consultado   
+            expect(response.body.id).to.be.a('number'); // Verifica se o ID da transferência retornada é um número
+            expect(response.body.conta_origem_id).to.equal(2); // Verifica se a conta de origem é igual a 2
+            expect(response.body.conta_destino_id).to.equal(1); // Verifica se a conta de destino é igual a 1
+            expect(response.body.valor).to.equal(50); // Verifica se o valor da transferência é igual a 50
+            expect(response.body.conta_origem_id).to.be.a('number'); // Verifica se a conta de origem é um número
+            expect(response.body.conta_destino_id).to.be.a('number'); // Verifica se a conta de destino é um número
+            expect(response.body.valor).to.be.a('number'); // Verifica se o valor é um número   
+           
+            console.log('Status: ', response.status);
+            console.log('Transferências:', response.body); // Exibir a transferência específica no console
         });
 
         it('Consulta uma transferência - não autorizada. Erro 401.', async () => {
